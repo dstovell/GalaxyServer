@@ -69,7 +69,6 @@
 
 	    <script src="/js/bootstrap.min.js"></script>
 
-	    <script src="/js/paper-full.min.js"></script>
 	    <script src="/phaser/2.1.2/phaser.min.js"></script>
 
 	    <script src="/js/ejs_production.js"></script>
@@ -77,9 +76,6 @@
 	    <script src="/js/dragObject.js"></script>
 	    <script src="/js/tools.js"></script>
 	    <script src="/js/phaser-tools.js"></script>
-	    <script src="/js/starmapShip.js"></script>
-	    <script src="/js/ship.js"></script>
-	    <script src="/js/debrisField.js"></script>
 
 	    <script src="/drone/ui.js"></script>
 	</head>
@@ -93,16 +89,6 @@
 	            	<label class="username">
 		                <span>Username</span>
 		                <input id="username" name="username" value="" type="text" autocomplete="on" placeholder="Username">
-	                </label>
-	                
-	                <label class="password">
-		                <span>Password</span>
-		                <input id="password" name="password" value="" type="password" placeholder="Password">
-	                </label>
-
-	                <label class="password">
-		                <span>Create Account</span>
-		                <input type="checkbox" id="attemptCreate" name="attemptCreate" value="1">
 	                </label>
 
 	                <button class="login-button" type="button" onclick="onLoginSubmit()">
@@ -145,22 +131,17 @@
 
 			function onLoginSubmit() {
 				var username = document.getElementById('username').value;
-				var password = document.getElementById('password').value;
-				var attemptCreate = document.getElementById('attemptCreate').checked;
+				var password = '';//document.getElementById('password').value;
 
-				if (attemptCreate) {
-					addUser(username, password);
-				}
-				else {
-					loginUser(username, password);
-				}
+				loginUser(username, password);
 			}
 
 			function loginUser(username, password) {
-				jQuery.post( "/game/users/loginuser",
+				jQuery.post( "/api/users/loginuser",
 				{
 					username:username,
-					password:password
+					password:password,
+					add:true
 				},
 				function( result ) {
 					hideLoginPopup(true);
@@ -168,7 +149,7 @@
 			}
 
 			function addUser(username, password) {
-				jQuery.post( "/game/users/adduser",
+				jQuery.post( "/api/users/adduser",
 				{
 					username:username,
 					email:'',
@@ -180,11 +161,11 @@
 			}
 
 			function logoutUser() {
-				jQuery.post( "/game/users/logoutuser",
+				jQuery.post( "/api/users/logoutuser",
 				{},
 				function( result ) {
 					showLoginPopup();
-					//location.reload();
+					location.reload();
 				});
 			}
 
@@ -219,9 +200,9 @@
 			}
 
 			$(document).ready(function() {
-				//if (!isLoggedIn()) {
-				//	showLoginPopup();
-				//}
+				if (!isLoggedIn()) {
+					showLoginPopup();
+				}
 			});
 		</script>
 

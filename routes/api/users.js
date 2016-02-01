@@ -26,11 +26,13 @@ exports = module.exports = function routeSetup(options) {
 
         var username = req.param('username');
         var password = req.param('password');
+        var add = req.param('add');
 
         console.log("loginUser username=" + username);
         console.log("loginUser password=" + password);
+        console.log("loginUser add=" + add);
 
-        users_controller.loginUser( username, password, function(err, user){
+        users_controller.loginUser( username, password, (add === "true"), function(err, user){
             if (err != null) {
                 console.log("loginUser err=" + err);
                 return res.json({err:err});

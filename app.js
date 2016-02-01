@@ -90,7 +90,7 @@ exports.init = function (port) {
     app.use('/admin/galaxy', require('./routes/admin/galaxy')(options) );
     app.use('/admin/assets', require('./routes/admin/assets')(options) );
 
-    app.use('/api/users', require('./routes/api/users'));
+    app.use('/api/users', require('./routes/api/users')(options));
 
     //var art = require('framework/art');
 
