@@ -7,6 +7,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
+var fs = require('fs');
 // Database
 var mongo = require('mongoskin');
 var defaultMongoServer = (process.env.NODE_ENV == 'development') ? "mongodb://localhost:27017/GalaxyServer" : "mongodb://droneadmin:droneadmin1234@proximus.modulusmongo.net:27017/qI7taqes";
@@ -44,7 +45,33 @@ function printTitle() {
 
 var options = {};
 
-options.config = require('./config/global.json');
+var forEachFile = function( dir, fullpath, cb ) {
+    if( cb == null ){
+        cb = fullpath;
+        fullpath = false;
+    }
+    var files = [];
+    try {
+        fs.readdirSync(dir).filter(function (filename) {
+               return fs.statSync(path.join(dir, filename)).isFile();
+        }).sort().map(function (filename) {
+            files.push( fullpath ? path.join(dir, filename) : filename);
+        });
+    }
+    catch (e) {
+    }
+    files.forEach(cb);
+};
+
+options.config = {};
+
+forEachFile("./config/", false, function(filename){
+    console.log("Loading " + filename);
+    var configFile = require('./config/' + filename);
+    for (var k in configFile) {
+        options.config[k] = configFile[k];
+    }
+});
 
 exports.init = function (port) {
 
@@ -57,7 +84,7 @@ exports.init = function (port) {
     // view engine setup
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');
-    app.set('layout', 'layout')
+    app.set('layout', 'layout');
 
     app.use(expressLayouts);
     app.use(favicon());
