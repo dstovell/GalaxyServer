@@ -144,7 +144,7 @@
 					add:true
 				},
 				function( result ) {
-					hideLoginPopup(true);
+					hideLoginPopup(false);
 				});
 			}
 
@@ -202,6 +202,9 @@
 			$(document).ready(function() {
 				if (!isLoggedIn()) {
 					showLoginPopup();
+				}
+				else {
+					loginUser(getUsername(), "");
 				}
 			});
 		</script>
