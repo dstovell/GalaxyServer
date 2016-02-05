@@ -52,15 +52,13 @@
 			starMap.selectStar(item.gameObject, pointer);
 		}
 
-		self.getStarRadius = <%- helper.getStarRadius %>
-
 		this.drawStar = function() {
 			if (this.useImage) {
 				this.starObj = drawSprite(phaserGame, data.x, data.y, data.type.id, {scale:0.1, gameObject:this}, selectStarBridge);	
 			}
 			else {
 				var isSpecial = false;
-				var size = self.getStarRadius(this.data.M);
+				var size = galaxy_math.getStarRadius(this.data.M);
 			    //this.starObj = new Phaser.Circle(this.x, this.y, size);
 			    //this.starObj.gameObject = this;
 			    var color = isSpecial ? "rgba(255,0,0,1)" : config.stars.classes[this.data.c].color;
@@ -104,15 +102,7 @@
 
 		this.graphics = phaserGame.add.graphics(0, 0);
 
-		self.dimensionKeys = <%- JSON.stringify(helper.dimensionKeys) %>
-    	self.getDistanceSquared = <%- helper.getDistanceSquared %>
-    	self.getDistance = <%- helper.getDistance %>
-    	self.getSectorCoordinates = <%- helper.getSectorCoordinates %>
-    	self.generateSpiral = <%- helper.generateSpiral %>
-    	self.generateSpirals = <%- helper.generateSpirals %>
-    	self.distToSegmentSquared = <%- helper.distToSegmentSquared %>
-    	self.getDistanceFromArc = <%- helper.getDistanceFromArc %>
-    	self.getDistanceFromAnySpiral = <%- helper.getDistanceFromAnySpiral %>
+		self.getSectorCoordinates = <%- helper.getSectorCoordinates %>
 
 		function getPoints(posA, posB, ringRadius) {
 
@@ -153,10 +143,8 @@
 		bmd.cls();
 		bmd.circle(<%= viewportWidth/2 %>, <%= viewportWidth/2 %>, config.coreSize, gradient);
 
-		this.spirals = self.generateSpirals({x:0, y:0}, config);
+		this.spirals = galaxy_math.generateSpirals({x:0, y:0}, config.spirals);
 
-
-		//replace with self.generateSpirals
 		for (var sp=0; sp<this.spirals.length; sp++) {
 			var arc = this.spirals[sp];
 
@@ -334,7 +322,7 @@
 	    				var sector = galaxy.sectors[sectorCoords.x][sectorCoords.y];
 	    				//console.log("sector=" + JSON.stringify(sector));
 
-	    				var distFromSpirals = self.getDistanceFromAnySpiral({x:pointer.x, y:pointer.y}, this.spirals);
+	    				var distFromSpirals = galaxy_math.getDistanceFromArcArray({x:pointer.x, y:pointer.y}, this.spirals);
 	    				console.log("distFromSpirals=" + distFromSpirals);
 
 	    				//phaserGame.add.tween(phaserGame.camera.scale).to({ x: 4.0, y: 4.0}, 500, Phaser.Easing.Linear.None, true);
