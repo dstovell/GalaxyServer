@@ -1,6 +1,6 @@
 <% 	
-	var viewportWidth = 1000;
-	var viewportHeight = 1000;
+	var viewportWidth = 900;
+	var viewportHeight = 900;
 	console.log('page started');
 %>
 
@@ -335,6 +335,9 @@
     		//phaserGame.camera.y -= 4;
     	}
 
+    	//phaserGame.camera.x = (phaserGame.width * -0.5);
+    	//phaserGame.camera.y = (phaserGame.height * -0.5);
+
     	this.getStarById = function(starId) {
     		for (var i in this.mapRender.stars) {
 				if (this.mapRender.stars[i].data.id == starId) {
@@ -361,6 +364,12 @@
 				fleet.warp(endStar, points[0], points[1], travelAngle, updatedFleet.dest.travelTime, updatedFleet.dest.arrivalTime);
 			});
 		}
+
+		this.worldScale = 1.0;
+		this.zoom = function(amount) {
+	    	this.worldScale += amount;
+	    	phaserGame.world.scale.set(this.worldScale);
+	    }
 	}
 </script>
 
@@ -391,22 +400,11 @@
 	        phaserGame.load.image('outlineHex', '/game/starmap/outlineHex.png');
 	    }
 
-	    function zoomInFunc() {
-	    	
-	    }
-
-	     function zoomOutFunc() {
-	    	phaserGame.camera.scale.x -= 0.01;
-	        phaserGame.camera.scale.y -= 0.01;
-	    }
-
 	    function create () {
 	    	console.log("create");
 	    	phaserGame.stage.backgroundColor = "#000000";
 	    	phaserGame.world.setBounds(-1*<%= viewportWidth %>, -1*<%= viewportHeight %>, <%= viewportWidth %>*4, <%= viewportHeight %>*4);
 	    	cursors = phaserGame.input.keyboard.createCursorKeys();
-	    	zoomIn = phaserGame.input.keyboard.addKey(Phaser.Keyboard.ONE);
-	    	zoomOut = phaserGame.input.keyboard.addKey(Phaser.Keyboard.TWO);
 	    	phaserGame.input.addPointer();
 
 	        starMap = new StarMap();
@@ -415,33 +413,36 @@
 	    }
 
 	    function update() {
-		    if (cursors.up.isDown)
-	        {
-	        	phaserGame.camera.y -= 4;
-	        }
-	        else if (cursors.down.isDown)
-	        {
-	        	phaserGame.camera.y += 4;
-	        }
+	    	if (cursors != null) {
+			    if (cursors.up.isDown)
+		        {
+		        	phaserGame.world.pivot.y -= 4;
+		        }
+		        else if (cursors.down.isDown)
+		        {
+		        	phaserGame.world.pivot.y += 4;
+		        }
 
-	        if (cursors.left.isDown)
-	        {
-	            phaserGame.camera.x -= 4;
-	        }
-	        else if (cursors.right.isDown)
-	        {
-	            phaserGame.camera.x += 4;
-	        }
+		        if (cursors.left.isDown)
+		        {
+		            phaserGame.world.pivot.x -= 4;
+		        }
+		        else if (cursors.right.isDown)
+		        {
+		            phaserGame.world.pivot.x += 4;
+		        }
+		    }
 
-	        if (zoomIn.isDown) {
-	        	phaserGame.camera.scale.x += 0.01;
-	        	phaserGame.camera.scale.y += 0.01;
-	        }
-
-	        if (zoomOut.isDown) {
-	        	phaserGame.camera.scale.x -= 0.01;
-	        	phaserGame.camera.scale.y -= 0.01;
-	        }
+	        var mouseWheel = function(event) { 
+	        	if (phaserGame.input.mouse.wheelDelta > 0) {
+	        		starMap.zoom(-0.025);
+	        	} else if (phaserGame.input.mouse.wheelDelta < 0) {
+	        		starMap.zoom(0.025);
+	        	} 
+	        };
+	        if (phaserGame.input.mouse) {
+	    		phaserGame.input.mouse.mouseWheelCallback = mouseWheel;
+	    	}
 
 	        starMap.update();
 		}
