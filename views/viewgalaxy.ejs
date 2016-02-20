@@ -393,11 +393,14 @@
 	var starMap = null;
 
 	window.onload = function() {
+		var isMobile = true;//Phaser.Device.mobileSafari;
+
 		var startTime = new Date().getTime();
 		console.log("window.onload started");
 
 		var transparentBG = false;
-		phaserGame = new Phaser.Game(viewportWidth, viewportHeight, Phaser.AUTO, 'starmap-viewport', 
+		var renderMode = isMobile ? Phaser.CANVAS : Phaser.AUTO;
+		phaserGame = new Phaser.Game(viewportWidth, viewportHeight, renderMode, 'starmap-viewport', 
 				{ preload: preload,create:create, update:update, render:render }, transparentBG);
 
 		console.log("Phaser init done");
