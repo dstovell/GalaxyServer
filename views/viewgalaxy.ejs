@@ -138,13 +138,15 @@
 	    //  Add it to the world or we can't see it
 	    bmd.addToWorld(-1*viewportWidth/2, -1*viewportHeight/2, 0, 0);
 
+	    var coreSize = config.coreSize * (minDim/900) * 1.5;
+
 		var gradient = bmd.ctx.createRadialGradient(viewportWidth/2, viewportHeight/2, 
-													config.coreSize*0.3, viewportWidth/2, viewportHeight/2, config.coreSize*0.8);
+													coreSize*0.2, viewportWidth/2, viewportHeight/2, coreSize*0.8);
   		gradient.addColorStop(0, 'rgba(200,200,200,1.0)');
   		gradient.addColorStop(1, 'transparent');
 
 		bmd.cls();
-		bmd.circle(viewportWidth/2, viewportHeight/2, config.coreSize, gradient);
+		bmd.circle(viewportWidth/2, viewportHeight/2, coreSize, gradient);
 
 		this.spirals = galaxy_math.generateSpirals({x:0, y:0}, config.spirals);
 
@@ -320,7 +322,7 @@
 
 	    			var pos = displayToGalaxyCoords(pointer);
 	    			var sectorCoords = self.getSectorCoordinates(pos, galaxy.aabb);
-	    			if (sectorCoords) {
+	    			/*if (sectorCoords) {
 	    				console.log("pointer.isDown sectorCoords=" + JSON.stringify(sectorCoords));
 	    				var sector = galaxy.sectors[sectorCoords.x][sectorCoords.y];
 	    				//console.log("sector=" + JSON.stringify(sector));
@@ -331,7 +333,7 @@
 	    				//phaserGame.add.tween(phaserGame.camera.scale).to({ x: 4.0, y: 4.0}, 500, Phaser.Easing.Linear.None, true);
 	    				//phaserGame.camera.follow(null)
 	    				//phaserGame.add.tween(phaserGame.camera).to({ x:pointer.x-0.5*viewportWidth, y:pointer.y-0.5*viewportHeight}, 500, Phaser.Easing.Linear.None, true);
-	    			}
+	    			}*/
 	    		}
     		}
 
@@ -370,9 +372,9 @@
 
 		this.worldScale = 1.0;
 		this.zoom = function(amount) {
-	    	this.worldScale += amount;
+	    	this.worldScale += amount * this.worldScale;
 	    	this.worldScale = Math.max(this.worldScale, 1.0);
-	    	this.worldScale = Math.min(this.worldScale, 10.0);
+	    	this.worldScale = Math.min(this.worldScale, 40.0);
 	    	phaserGame.world.scale.set(this.worldScale);
 	    }
 	}
@@ -398,8 +400,6 @@
 		phaserGame = new Phaser.Game(viewportWidth, viewportHeight, Phaser.AUTO, 'starmap-viewport', 
 				{ preload: preload,create:create, update:update, render:render }, transparentBG);
 
-		phaserGame.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
-
 		console.log("Phaser init done");
 	    function preload () {
 	    	console.log("preload");
@@ -421,9 +421,9 @@
 	    function update() {
 	    	var mouseWheel = function(event) { 
 	        	if (phaserGame.input.mouse.wheelDelta > 0) {
-	        		starMap.zoom(-0.05);
+	        		starMap.zoom(-0.03);
 	        	} else if (phaserGame.input.mouse.wheelDelta < 0) {
-	        		starMap.zoom(0.05);
+	        		starMap.zoom(0.03);
 	        	} 
 	        };
 	        if (phaserGame.input.mouse) {

@@ -154,8 +154,8 @@ function updateDragCamera(pgame, obj) {
 	}
 
 	if (obj._wasTouching) {
-   		pgame.world.pivot.x += obj._dX;
-   		pgame.world.pivot.y += obj._dY;
+   		pgame.world.pivot.x += obj._dX/(pgame.world.scale.x*1);
+   		pgame.world.pivot.y += obj._dY/(pgame.world.scale.y*1);
    	}
 }
 
