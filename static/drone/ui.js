@@ -154,8 +154,8 @@ function updateDragCamera(pgame, obj) {
 	}
 
 	if (obj._wasTouching) {
-		pgame.camera.x += obj._dX;
-   		pgame.camera.y += obj._dY;
+   		pgame.world.pivot.x += obj._dX;
+   		pgame.world.pivot.y += obj._dY;
    	}
 }
 
@@ -167,7 +167,7 @@ function updateDragCamera(pgame, obj) {
 }*/
 
 function updateDrag(pgame, obj) {
-	if (!pgame) {
+	if (!pgame || !pgame.input.mousePointer) {
 		return;
 	}
 
