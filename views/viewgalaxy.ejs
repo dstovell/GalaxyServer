@@ -303,9 +303,10 @@
 			}
     	}
 
+    	this.input = new InputModule(phaserGame);
+
     	this.updateInput = function(pgame) {
-    		updateUiInput(pgame, this);
-    		updateDragCamera(pgame, this);
+    		this.input.update();
 
     		var pointer = pgame.input.activePointer;
     		if (pointer.isDown) {
@@ -422,17 +423,6 @@
 	    }
 
 	    function update() {
-	    	var mouseWheel = function(event) { 
-	        	if (phaserGame.input.mouse.wheelDelta > 0) {
-	        		starMap.zoom(-0.03);
-	        	} else if (phaserGame.input.mouse.wheelDelta < 0) {
-	        		starMap.zoom(0.03);
-	        	} 
-	        };
-	        if (phaserGame.input.mouse) {
-	    		phaserGame.input.mouse.mouseWheelCallback = mouseWheel;
-	    	}
-
 	        starMap.update();
 		}
 
