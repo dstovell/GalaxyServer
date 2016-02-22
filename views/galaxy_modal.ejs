@@ -1,0 +1,123 @@
+<%
+	for (var i=0; i<5; i++) {
+%>
+		<div class="modal fade" id="test-modal-<%= i %>" data-modal-index="<%= i %>">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title"></h4>
+		      </div>
+		      <div class="modal-body">
+		      </div>
+		      <div class="modal-footer">
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+<%
+	}
+%>
+
+<style>
+	@import "lesshat";
+
+	@distance:40px; /* distance between stacked modals*/
+
+	@modal-translate-z: -340px; /* The first modal translateZ value*/
+
+	.transform(@translateZ) {
+	  -webkit-transform: scale(0.8) rotateY(45deg) translateZ(@translateZ);
+	  -ms-transform: scale(0.8) rotateY(45deg) translateZ(@translateZ);
+	  -o-transform: scale(0.8) rotateY(45deg) translateZ(@translateZ);
+	  transform: scale(0.8) rotateY(45deg) translateZ(@translateZ);
+	}
+
+	.preserve-3d(){
+	  -webkit-transform-style:preserve-3d;
+	  -ms-transform-style:preserve-3d;
+	  -o-transform-style:preserve-3d;
+	  transform-style:preserve-3d;
+	}
+
+	.perspective(@perspective){
+	  -webkit-perspective:@perspective;
+	  -moz-perspective:@perspective;
+	  -ms-perspective:@perspective;
+	  -o-perspective:@perspective;
+	  perspective:@perspective;
+	}
+
+	.modal.in{
+	  .perspective(2000px);
+	  
+	  .modal-dialog{
+	    &.aside{
+	      .transform(@modal-translate-z);
+	      .preserve-3d();
+	      
+	      &.aside-1{
+	        .transform(calc(@modal-translate-z + @distance));
+	      }
+	      &.aside-2{
+	        .transform(calc(@modal-translate-z + (@distance * 2)));
+	      }
+	      &.aside-3{
+	        .transform(calc(@modal-translate-z + (@distance * 3)));
+	      }
+	      &.aside-4{
+	        .transform(calc(@modal-translate-z + (@distance * 4)));
+	      }   
+	      &.aside-5{
+	        .transform(calc(@modal-translate-z + (@distance * 5)));
+	      }
+	    }
+	  }
+	}
+
+	.modal-title
+	{
+		color:#000;
+	}
+</style>
+
+<script>
+	$('.btn[data-toggle=modal]').on('click', function(){
+	  var $btn = $(this);
+	  var currentDialog = $btn.closest('.modal-dialog'),
+	  targetDialog = $($btn.attr('data-target'));;
+	  if (!currentDialog.length)
+	    return;
+	  targetDialog.data('previous-dialog', currentDialog);
+	  currentDialog.addClass('aside');
+	  var stackedDialogCount = $('.modal.in .modal-dialog.aside').length;
+	  if (stackedDialogCount <= 5){
+	    currentDialog.addClass('aside-' + stackedDialogCount);
+	  }
+	});
+
+	var modalCount = 0;
+
+	$('.modal').on('hide.bs.modal', function(){
+		modalCount--;
+		if (modalCount > 0) {
+			var lastModal = '#test-modal-' + modalCount;
+			$(lastModal + ' .modal-dialog').removeClass('aside');
+		}
+	});	
+
+	function showModal(title, bodyHtml, footerHtml) {
+		var thisModal = '#test-modal-' + modalCount;
+
+		if (modalCount > 0) {
+			var lastModal = '#test-modal-' + (modalCount-1);
+			$(lastModal + ' .modal-dialog').addClass('aside');
+		}
+
+		$(thisModal + ' .modal-title').html(title + " - " + modalCount);
+		$(thisModal + ' .modal-body').html(bodyHtml);
+		$(thisModal + ' .modal-footer').html(footerHtml);
+		$(thisModal).modal('show');
+		modalCount++;
+	};
+</script>

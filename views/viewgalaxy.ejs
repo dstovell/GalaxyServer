@@ -1,3 +1,6 @@
+
+<%- partial('galaxy_modal') %>
+
 <div class="row">
 	<div class="col-md-12">
 		<div id="starmap-viewport" style="position:relative; width:900px;height:900px;">
@@ -6,15 +9,15 @@
 </div>
 
 <script>
-	var viewportWidth = window.innerWidth;
-	var viewportHeight = window.innerHeight;
-
 	var galaxy = null;
 	var config = null;	
 	var phaserGame = null;
 	var starMap = null;
 
 	var onLoginData = function() {
+		var viewportWidth = window.innerWidth;
+		var viewportHeight = window.innerHeight;
+
 		var isMobile = true;//Phaser.Device.mobileSafari;
 
 		var startTime = new Date().getTime();
@@ -40,6 +43,8 @@
 	        starMap = new StarMap(phaserGame, config, galaxy, viewportWidth, viewportHeight);
 
 			//alert("load took " + (new Date().getTime() - startTime) + "ms");
+
+			showModal('Modal Madness!', '<button class="btn btn-primary" onclick="showModal()">Body</button', '<button class="btn btn-default">Footer</button>');
 	    }
 
 	    function update() {
