@@ -11,6 +11,7 @@ function InputModule(_pgame)
 		}
 
 		self.worldScale = 1.0;
+		self.rotationRate = 0.0;
 	};
 
 	self.moveCameraTo = function(x, y) {
@@ -20,7 +21,7 @@ function InputModule(_pgame)
 									750, Phaser.Easing.Quadratic.InOut, true );
 	};
 
-	self.updateDragCamera = function() {
+	self.updateCamera = function() {
 		if (!self.pgame) {
 			return;
 		}
@@ -41,7 +42,7 @@ function InputModule(_pgame)
 		self.pgame.world.scale.set(self.worldScale);
 	};
 
-	self.updateDrag = function() {
+	self.updateTouch = function() {
 		if (!self.pgame) {
 			return;
 		}
@@ -103,6 +104,10 @@ function InputModule(_pgame)
 	    return;
 	};
 
+	self.setRotationRate = function(rate) {
+		self.rotationRate = rate;
+	};
+
 	self.onMouseWheel = function(event) { 
     	if (self.pgame.input.mouse.wheelDelta > 0) {
     		self.zoom(-0.03);
@@ -112,8 +117,12 @@ function InputModule(_pgame)
     };
 
 	self.update = function() {
-		self.updateDrag();
-		self.updateDragCamera();
+		self.updateTouch();
+		self.updateCamera();
+
+		if (self.rotationRate) {
+			self.pgame.world.rotation += self.rotationRate;
+		}
 	};
 
 	self.init();

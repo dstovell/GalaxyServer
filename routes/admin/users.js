@@ -5,12 +5,6 @@ exports = module.exports = function routeSetup(options) {
 
     var users_controller = require('../../lib/users/users_controller').create(options);
 
-    /*router.get('/', function (req, res) {
-        //res.writeHead(301, { "location": "/userlist" });
-        //res.end();
-        return res.seeOther("/userlist");
-    });*/
-
     router.get('/userlist', function (req, res) {
 
         users_controller.getUsers( function (err, userlist) {
@@ -60,4 +54,4 @@ exports = module.exports = function routeSetup(options) {
     });
 
     return router;
-}
+};

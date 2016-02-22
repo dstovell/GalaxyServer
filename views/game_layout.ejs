@@ -81,6 +81,9 @@
 		<script src="/drone/input.js"></script>
 		<script src="/drone/starmap.js"></script>
 
+		<script src="/api/login.js"></script>
+		<script src="/api/galaxy.js"></script>
+
 	    <script src="/shared/galaxy_math.js"></script>
 	</head>
 
@@ -141,62 +144,28 @@
 			}
 
 			function loginUser(username, password) {
-				jQuery.post( "/api/users/loginuser",
-				{
-					username:username,
-					password:password,
-					add:true
-				},
-				function( result ) {
+				LoginManager.loginUser(username, password, function(err, result) {
 					hideLoginPopup(false);
+					if (typeof onLoginedIn === 'function') {
+						onLoginedIn();
+					}
 				});
 			}
 
 			function addUser(username, password) {
-				jQuery.post( "/api/users/adduser",
-				{
-					username:username,
-					email:'',
-					password:password
-				},
-				function( result ) {
+				LoginManager.addUser(username, password, function(err, result) {
 					hideLoginPopup(true);
+					if (typeof onLoginedIn === 'function') {
+						onLoginedIn();
+					}
 				});
 			}
 
 			function logoutUser() {
-				jQuery.post( "/api/users/logoutuser",
-				{},
-				function( result ) {
+				LoginManager.logoutUser(function(err) {
 					showLoginPopup();
 					location.reload();
 				});
-			}
-
-			function getCookie(cname) {
-			    var name = cname + "=";
-			    var ca = document.cookie.split(';');
-			    for(var i=0; i<ca.length; i++) {
-			        var c = ca[i];
-			        while (c.charAt(0)==' ') c = c.substring(1);
-			        if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
-			    }
-			    return "";
-			}
-
-			function isLoggedIn() {
-				if (getCookie('username') != '') {
-					return true;
-				}
-				return false;
-			}
-
-			function getUsername() {
-				return getCookie('username');
-			}
-
-			function getUserId() {
-				return getCookie('uid');
 			}
 
 			function refreshPage() {
@@ -204,11 +173,11 @@
 			}
 
 			$(document).ready(function() {
-				if (!isLoggedIn()) {
+				if (!LoginManager.isLoggedIn()) {
 					showLoginPopup();
 				}
 				else {
-					loginUser(getUsername(), "");
+					loginUser(LoginManager.getUsername(), "");
 				}
 			});
 		</script>

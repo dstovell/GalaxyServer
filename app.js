@@ -55,6 +55,9 @@ var forEachFile = function( dir, fullpath, cb ) {
         fs.readdirSync(dir).filter(function (filename) {
                return fs.statSync(path.join(dir, filename)).isFile();
         }).sort().map(function (filename) {
+            if (filename === ".DS_Store") {
+                return;
+            }
             files.push( fullpath ? path.join(dir, filename) : filename);
         });
     }
@@ -111,13 +114,19 @@ exports.init = function (port) {
 
     options.db = db;
 
-    app.use('/', require('./routes/admin/index'));
-    app.use('/admin', require('./routes/admin/index'));
-    app.use('/admin/users', require('./routes/admin/users')(options) );
-    app.use('/admin/galaxy', require('./routes/admin/galaxy')(options) );
-    app.use('/admin/assets', require('./routes/admin/assets')(options) );
+    var loadRoutes = function(path) {
+        var basePath = "./routes";
+        var fullPath = "/" + path + "/";
+        console.log("loadRoutes " + path + " -> " + fullPath + " -> " + basePath + fullPath);
+        forEachFile(basePath + fullPath, false, function(filename){
+            var f = fullPath + filename.split(".")[0];
+            console.log("app.use('" + f + "', require('" + basePath + f + "')(options));");
+            app.use(f, require(basePath + f)(options));
+        });
+    };
 
-    app.use('/api/users', require('./routes/api/users')(options));
+    loadRoutes("admin"); 
+    loadRoutes("api");
 
     //var art = require('framework/art');
 

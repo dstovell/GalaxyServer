@@ -1,6 +1,6 @@
 "use strict";
 
-function Star(starMap, data, config, graphics)
+function Star(starMap, data, config, graphics, group)
 {
 	var self = this;
 
@@ -62,6 +62,9 @@ function StarMap(_pgame, config, galaxy, viewportWidth, viewportHeight)
 		this.graphics = this.pgame.add.graphics(0, 0);
 
 		this.input = new InputModule(this.pgame);
+		this.input.setRotationRate(0.001);
+
+		this.galaxyGroup = this.pgame.add.group();
 
 		var minDim = Math.min(viewportWidth, viewportHeight);
 		this.xCoordScale = minDim/galaxy.aabb.x.size;
@@ -132,7 +135,7 @@ function StarMap(_pgame, config, galaxy, viewportWidth, viewportHeight)
 		for (var j in galaxy.stars) {
 			var data = galaxy.stars[j];
 
-			var star = new Star(this, data, config, this.graphics);
+			var star = new Star(this, data, config, this.graphics, this.galaxyGroup);
 		    this.mapRender.stars.push(star);
 		}
 
@@ -236,7 +239,7 @@ function StarMap(_pgame, config, galaxy, viewportWidth, viewportHeight)
 		}
 
 		this.circleMenu = openCircleMenu(this.pgame, star.data.pos.x, star.data.pos.y, items, {});
-	}
+	};
 
 	this.closeMenu = function() {
 		if (this.circleMenu == null) {

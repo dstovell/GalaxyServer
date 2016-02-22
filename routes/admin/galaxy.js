@@ -12,8 +12,8 @@ exports = module.exports = function routeSetup(options) {
 
         var galaxyConfig = galaxy_controller.getConfig();
 
-        galaxy_controller.getGalaxy(function(err, galaxy){
-             res.render('viewgalaxy', {layout:'game_layout', galaxy:galaxy, config:galaxyConfig, helper:galaxy_controller.galaxyHelper});
+        galaxy_controller.getGalaxy(0, function(err, galaxy){
+             res.render('viewgalaxy', {layout:'game_layout'});
         });
        
     });
@@ -26,7 +26,7 @@ exports = module.exports = function routeSetup(options) {
 
     router.get('/getStar/:starId', function(req, res){
         var starId = req.params.starId;
-        galaxy_controller.getStar(starId, function(err, star){
+        galaxy_controller.getStar(0, starId, function(err, star){
             return res.json({err:err, result:star});
         });
     });   
