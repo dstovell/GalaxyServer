@@ -9,7 +9,7 @@ exports = module.exports = function routeSetup(options) {
 
     router.get('/getGalaxy', function(req, res){
         var uid = parseInt(req.cookies.uid);
-        console.log("/getGalaxy uid=" + uid);
+        console.log("/getGalaxy uid=" + uid + " cookies=" + JSON.stringify(req.cookies));
 
         galaxy_controller.getGalaxy(uid, function(err, galaxy){
             return res.json({ err:err, result:{galaxy:galaxy, config:galaxy_controller.getConfig()} });
