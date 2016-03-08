@@ -120,6 +120,25 @@
   		return 4.85 * Math.sqrt( L );
   	};
 
+    exports.getPositionOnCircle = function(centerPos, radius, theta) {
+      var p = {};
+      p.x = centerPos.x + radius*Math.cos(theta);
+      p.y = centerPos.x + radius*Math.sin(theta);
+      return p;
+    };
+
+    exports.getPositionOnSpiral = function(startPoint, openingRate, arcLength, startAngle, t) {
+      var maxAngle = arcLength * 2 * Math.PI + startAngle;
+      var segmentArc = 0.05;
+      var r = 10;
+      var arc = [];
+
+      var arcT = t*(maxAngle-startAngle) + startAngle;
+      r = r + openingRate*(arcT/segmentArc);
+      var p = exports.getPositionOnCircle(startPoint, r, arcT);
+      
+      return p;
+    };
 
     exports.generateSpiral = function(startPoint, openingRate, arcLength, startAngle) {
       var maxAngle = arcLength * 2 * Math.PI + startAngle;
@@ -127,9 +146,7 @@
       var r = 10;
       var arc = [];
       for (var t=startAngle;t<maxAngle;t+=segmentArc) { 
-        var p = {};
-        p.x = startPoint.x + r*Math.cos(t);
-        p.y = startPoint.x + r*Math.sin(t);
+        var p = exports.getPositionOnCircle(startPoint, r, t);
         arc.push(p);
         r += openingRate;
       }
@@ -144,6 +161,33 @@
         spirals.push(arc);
       }
       return spirals;
+    };
+
+    exports.getPerpendicularSegment = function(lastPos, nextPos, t) {
+      /*var midPoint = exports.interpolatePointsFloat(lastPos, nextPos, t);
+             
+      var ka = Math.pow( 1, 2 );
+      var kb = Math.pow( 1, 2 );
+      var kk = ((nextPos.y-lastPos.y) * (midPoint.x-lastPos.x) - (nextPos.x-lastPos.x) * (midPoint.y-lastPos.y)) / (ka + kb);
+      //console.log("kk=" + kk);
+
+      var perpPos = {};
+      perpPos.x = midPoint.x - kk * (nextPos.y-lastPos.y);
+      perpPos.y = midPoint.y + kk * (nextPos.x-lastPos.x);*/
+
+      var midPoint = exports.interpolatePointsFloat(lastPos, nextPos, 0.5);
+      var x1 = lastPos.x;
+      var y1 = lastPos.y;
+      var x2 = nextPos.x;
+      var y2 = nextPos.y;
+      var x3 = midPoint.x;
+      var y3 = midPoint.y;
+
+      var k = ((y2-y1) * (x3-x1) - (x2-x1) * (y3-y1)) / ( Math.pow((y2-y1), 2) + Math.pow((x2-x1), 2) );
+      var x4 = x3 - k * (y2-y1);
+      var y4 = y3 + k * (x2-x1);
+
+      return {start:midPoint, end:{x:x4, y:y4}};
     };
 
     exports.distToSegmentSquared = function(p, v, w) {
