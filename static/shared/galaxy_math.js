@@ -131,10 +131,9 @@
       var maxAngle = arcLength * 2 * Math.PI + startAngle;
       var segmentArc = 0.05;
       var r = 10;
-      var arc = [];
 
-      var arcT = t*(maxAngle-startAngle) + startAngle;
-      r = r + openingRate*(arcT/segmentArc);
+      var arcT = startAngle + t*(maxAngle-startAngle);
+      r = r + openingRate*Math.floor(((arcT-startAngle)/segmentArc));
       var p = exports.getPositionOnCircle(startPoint, r, arcT);
       
       return p;
