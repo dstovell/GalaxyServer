@@ -12,7 +12,8 @@
 
 	exports.interpolateFloat = function(min, max, t, fixed) {
 		var range = (max - min);
-		return min + t*range;
+    var val = min + t*range;
+		return (fixed) ? val.toFixed(fixed) : val;
 	};
 
 	exports.interpolateInt = function(min, max, t) {
@@ -70,7 +71,7 @@
 
     exports.rgbToHex = function(red, green, blue) {
       var rgb = blue | (green << 8) | (red << 16);
-       return '#' + (0x1000000 + rgb).toString(16).slice(1);
+      return '#' + (0x1000000 + rgb).toString(16).slice(1);
   	};
 
   	exports.bvToHex = function(bv) {
@@ -131,7 +132,7 @@
       var maxAngle = arcLength * 2 * Math.PI + startAngle;
       var segmentArc = 0.05;
       var r = 10;
-      var arc = [];
+      //var arc = [];
 
       var arcT = t*(maxAngle-startAngle) + startAngle;
       r = r + openingRate*(arcT/segmentArc);
@@ -175,7 +176,8 @@
       perpPos.x = midPoint.x - kk * (nextPos.y-lastPos.y);
       perpPos.y = midPoint.y + kk * (nextPos.x-lastPos.x);*/
 
-      var midPoint = exports.interpolatePointsFloat(lastPos, nextPos, 0.5);
+      t = (t != null) ? t : 0.5;
+      var midPoint = exports.interpolatePointsFloat(lastPos, nextPos, t);
       var x1 = lastPos.x;
       var y1 = lastPos.y;
       var x2 = nextPos.x;
@@ -247,10 +249,12 @@
       pointArray = pointArray || [];
       options = options || {};
       var multiplier = options.coordinateMult || 1;
+      var d;
+      var dKey;
 
-      var bounds = options.bounds || {}
-      for (var d=0; d<exports.dimensionKeys.length; d++) {
-        var dKey = exports.dimensionKeys[d];
+      var bounds = options.bounds || {};
+      for (d=0; d<exports.dimensionKeys.length; d++) {
+        dKey = exports.dimensionKeys[d];
         bounds[dKey] = bounds[dKey] || Number.MAX_VALUE;
       }
 
@@ -260,8 +264,8 @@
         var point = pointArray[i];
         var insideBounds = true;
 
-        for (var d=0; d<exports.dimensionKeys.length; d++) {
-          var dKey = exports.dimensionKeys[d];
+        for (d=0; d<exports.dimensionKeys.length; d++) {
+          dKey = exports.dimensionKeys[d];
           bounds[dKey] = bounds[dKey] || Number.MAX_VALUE;
 
           if (Math.abs(point[dKey]) > bounds[dKey]) {
@@ -273,8 +277,8 @@
           continue;
         }
 
-        for (var d=0; d<exports.math.dimensionKeys.length; d++) {
-          var dKey = exports.dimensionKeys[d];
+        for (d=0; d<exports.math.dimensionKeys.length; d++) {
+          dKey = exports.dimensionKeys[d];
 
           dims[dKey] = dims[dKey] || {min:Number.MAX_VALUE, max:Number.MIN_VALUE};
           dims[dKey].min = Math.min(dims[dKey].min, (point[dKey]*multiplier));
@@ -286,4 +290,4 @@
     return dims;
   };
 
-})(typeof exports === 'undefined'? this['galaxy_math']={}: exports);
+})(typeof exports === 'undefined' ? this.galaxy_math={}: exports);

@@ -75,4 +75,4 @@ exports = module.exports = function routeSetup(options) {
    
 
     return router;
-}
+};

@@ -1,3 +1,5 @@
+"use strict";
+
 var express = require('express');
 var router = express.Router();
 
@@ -26,9 +28,10 @@ exports = module.exports = function routeSetup(options) {
             if (err != null) {
                 //req.flash('error', err);
             }
+            result.msg = result.msg || err;
 
             res.send(
-                (err === null) ? { msg: '' } : { msg: err }
+                (err === null) ? result : result
             );
         });
     });
@@ -37,7 +40,7 @@ exports = module.exports = function routeSetup(options) {
         var uid = req.param('uid');
 
         users_controller.removeUser(uid, function(err, result) {
-            res.send((result == true) ? { msg: '' } : { msg:'error: ' + err });
+            res.send((result === true) ? { msg: '' } : { msg:'error: ' + err });
         });
     });
 
@@ -47,8 +50,9 @@ exports = module.exports = function routeSetup(options) {
         var password = req.param('password');
 
         users_controller.loginUser( username, password, function(err, result){
+            result.msg = result.msg || err;
             res.send(
-                (err === null) ? { msg: '' } : { msg: err }
+                (err === null) ? result : result
             );
         });
     });
