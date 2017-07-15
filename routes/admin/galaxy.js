@@ -6,14 +6,14 @@ var router = express.Router();
 exports = module.exports = function routeSetup(options) {
 
     var galaxy_controller = require('../../lib/galaxy/galaxy_controller').create(options);
+    var galaxyConfig = galaxy_controller.getConfig();
 
     router.get('/viewgalaxy', function(req, res){
         console.log("/viewgalaxy");
 
-        var galaxyConfig = galaxy_controller.getConfig();
-
         galaxy_controller.getGalaxy(0, function(err, galaxy){
-             res.render('viewgalaxy', {layout:'game_layout'});
+            galaxy = galaxy || {};
+            return res.render('viewgalaxy', {layout:'game_layout'});
         });
        
     });
