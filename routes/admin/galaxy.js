@@ -6,7 +6,7 @@ var router = express.Router();
 exports = module.exports = function routeSetup(options) {
 
     var galaxy_controller = require('../../lib/galaxy/galaxy_controller').create(options);
-    var galaxyConfig = galaxy_controller.getConfig();
+    //var galaxyConfig = galaxy_controller.getConfig();
 
     router.get('/viewgalaxy', function(req, res){
         console.log("/viewgalaxy");
