@@ -12,8 +12,10 @@ exports = module.exports = function routeSetup(options) {
     	var states = ai_controller.getStates();
 
     	console.log("states=" + JSON.stringify(states));
-
-        return res.render('editor', {layout:'layout_new', states:states});
+    	var id = "dan";
+    	ai_controller.getBrain(id, function(err, brain, userBrainsCollectionName) {
+       		return res.render('editor', {layout:'layout_new', states:states, collectionName:userBrainsCollectionName, brain:brain, oid:id});
+       	});
     });
 
     return router;

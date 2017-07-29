@@ -11,7 +11,7 @@
 			for (var s=0; s<states.length; s++) {
 		%>
 
-			<%- partial('widgets/ai_state', {state:states[s]}) %>
+			<%- partial('widgets/ai_state', {brain:brain, collectionName:collectionName, oid:oid, state:states[s]}) %>
 
 		<%
 			}
@@ -42,8 +42,8 @@
 </div>
 
 <script>
-	$(document).ready(function() {
-		setupEditables();
-	});
+	//$(document).ready(function() {
+	//	setupEditables();
+	//});
 
 </script>

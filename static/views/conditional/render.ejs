@@ -2,9 +2,26 @@
 	for (var i=0; i<conditionals.length; i++) {
 		var cond = conditionals[i];
 %>
-		<b>Name:</b> <a id="<%= id %>.<%= i %>.name" class="edit-string"><%= cond.name %></a>
-		<br>
-		<b>Entity:</b> <a id="<%= id %>.<%= i %>.entity" class="edit-string"><%= cond.entity %></a>
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="panel panel-default">
+		    		<div class="panel-body">
+		    			<div class="row">
+							<div class="col-md-3">
+		    					<b>Name:</b> <a id="<%= id %>.<%= i %>.name" class="edit-string"><%= cond.name %></a>
+		    				</div>
+		    				<div class="col-md-3">
+								<b>Entity:</b> <a id="<%= id %>.<%= i %>.entity" class="edit-select"><%= cond.entity %></a>
+							</div>
+						</div>
+		    		</div>
+		  		</div>
+
+		 	</div>
+		</div>
+
+		
 <%
 	}
 %>

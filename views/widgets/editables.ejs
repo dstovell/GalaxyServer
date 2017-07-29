@@ -39,6 +39,9 @@ function setupEditables(collection, oid) {
 		_setupEditable("number", collection, oid, $(this), {type:"number"});
 	});
 
+	$(".edit-select").each(function() {
+		_setupEditable("string", collection, oid, $(this), {type:"select"});
+	});
 }
 
 </script>

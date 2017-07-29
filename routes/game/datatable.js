@@ -5,7 +5,9 @@ var router = express.Router();
 
 exports = module.exports = function routeSetup(options) {
 
-	function handleSave(req, res, value) {
+	function handleSave(req, res, value, saveOptions) {
+		saveOptions = saveOptions || {};
+
 		var collectionName = req.param("collection");
     	var name = req.param("name");
     	var pk = req.param("pk");
@@ -13,8 +15,11 @@ exports = module.exports = function routeSetup(options) {
     	console.log(req.url + " " + collectionName + " name=" + name + " pk=" + pk + " value=" + value);
 
     	var collection = options.db.collection(collectionName);
-    	var update = {$set:{}};
-    	update.$set[name] = value;
+    	var default_update = {$set:{}};
+    	default_update.$set[name] = value;
+
+    	var update = saveOptions.update || default_update;
+
     	collection.findAndModify({_id:pk}, {}, update, {"new":true, "upsert":true}, function( err, doc ) {
 			if (err) {
 				console.error(req.url + " err=" + err);
@@ -34,7 +39,7 @@ exports = module.exports = function routeSetup(options) {
     });
 
     router.post('/save/json/:collection', function(req, res){
-    	var value = req.json("value");
+    	var value = req.param("value");
     	return handleSave(req, res, value);
     });
 

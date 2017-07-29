@@ -1,15 +1,20 @@
+<%
+	var safeId = id.replace(/\./g, "_");
+%>
+
 <div class="row">
 	<div class="col-md-12">
 
 		<div class="row">
 			<div class="col-md-12">
-				<a id="run-btn" class="btn btn-primary" onclick="addConditional_<%= id %>()">Add Conditional</a>
+				<a class="btn btn-primary" onclick="addConditional_<%= safeId %>()">Add Conditional</a>
+				<br><br>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				<div id="conditionals-<%= id %>" class="col-md-12">
+				<div id="conditionals-<%= safeId %>" class="col-md-12">
 				</div>
 			</div>
 		</div>
@@ -19,11 +24,12 @@
 
 
 <script>
-	 var conditionals_<%= id %> = [];
+	var conditionals_<%= safeId %> = <%- JSON.stringify(conditionals) %>;
 
-	function addConditional_<%= id %>() {
-		conditionals_<%= id %>.push({name:"", entity:""})
-		renderConditionals("<%= id %>", conditionals_<%= id %>);
+	function addConditional_<%= safeId %>() {
+		conditionals_<%= safeId %>.push({name:"", entity:""})
+		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
+		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
 	}
 
 
@@ -31,9 +37,22 @@
 		window.conditionalEJS = new EJS({url:'/views/conditional/render.ejs'});
 	}
 
-	function renderConditionals(id, conditionalList) {
+	function renderConditionals(collection, oid, id, conditionalList) {
+		var safeId = id.replace(/\./g, "_");
 		var html = window.conditionalEJS.render({id:id, conditionals:conditionalList});
-		$("#conditionals-"+id).html(html);
-		setupEditables();
+		$("#conditionals-"+safeId).html(html);
+		setupEditables(collection, oid);
 	}
+
+	function saveConditionals(collection, oid, id, conditionalList) {
+		var postData = {pk:oid, name:id, value:conditionalList}
+		$.post( "/game/datatable/save/json/"+collection, postData, function( data ) {
+			alert( "/game/datatable/save/json/"+collection );
+		});
+	}
+
+	$(document).ready(function() {
+		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
+	});
+
 </script>
