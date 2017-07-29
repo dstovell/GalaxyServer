@@ -1,0 +1,38 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse-terminal">
+        Terminal
+      </a>
+    </h4>
+  </div>
+  <div id="collapse-terminal" class="panel-collapse collapse">
+    <div class="panel-body">
+      <div class="row">
+        <div id="terminal-output" class="col-md-12">
+          None
+        </div>
+      </div>    
+    </div>
+  </div>
+</div>
+
+<script>
+var log = [];
+function renderLog() {
+  var html = "";
+
+  for (var i=0; i<log.length; i++) {
+    html += log[i] + "<br>";
+  }
+
+  $("#terminal-output").html(html);
+};
+
+function addToTerminal(title, msg) {
+  var line = "[" + title + "] " + msg; 
+  log.push(line);
+  renderLog();
+};
+</script>

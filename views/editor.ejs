@@ -1,0 +1,49 @@
+<%
+	if (typeof states == 'undefined') { states=[{id:"base", name:"Base"}, {id:"idle", name:"Idle"}]; }
+
+%>
+
+
+<div class="row">
+	<div class="col-md-6">
+
+		<%
+			for (var s=0; s<states.length; s++) {
+		%>
+
+			<%- partial('widgets/ai_state', {state:states[s]}) %>
+
+		<%
+			}
+		%>
+
+	</div>
+	<div class="col-md-6">
+
+		<div class="row">
+			<div class="col-md-12">
+				<%- partial('widgets/ai_sim_controls', {}) %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<%- partial('widgets/ai_sim_visualization', {}) %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<%- partial('widgets/ai_terminal', {}) %>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+		setupEditables();
+	});
+
+</script>

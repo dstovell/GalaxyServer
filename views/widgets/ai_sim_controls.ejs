@@ -1,0 +1,34 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse-controls">
+        Simulation Controls
+      </a>
+    </h4>
+  </div>
+  <div id="collapse-controls" class="panel-collapse collapse">
+    <div class="panel-body">
+
+      <a id="run-btn" class="btn btn-primary" onclick="runSimulation()">Run Simulation</a>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var simuationStarted = false;
+
+  function runSimulation() {
+    addToTerminal("Simulation", "Started");
+    simuationStarted = true;
+    updateControlState();
+  }
+
+  function updateControlState() {
+    $("#run-btn").attr('disabled', simuationStarted);
+  }
+
+</script>
+
+

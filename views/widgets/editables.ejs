@@ -1,0 +1,44 @@
+<script>
+
+function _setupEditable(urlType, collection, oid, obj, options) {
+	var wasInitialized = obj.hasClass("edit-init");
+	if (wasInitialized) {
+		return;
+	}
+	obj.addClass("edit-init");
+
+	var title = obj.data("title") || "";
+
+	var editableData = {
+	    pk:oid,
+	    url:"/game/datatable/save/"+urlType+"/"+collection,
+	    title:title,
+	    success: function(response, newValue) {
+	    	console.log("newValue=" + newValue);
+	    }
+	};
+
+	for (var k in options) {
+		editableData[k] = options[k];
+	}
+		
+	obj.editable(editableData);
+}
+
+function setupEditables(collection, oid) {
+	$.fn.editable.defaults.mode = 'inline';
+
+	collection = collection || "test";
+	oid = oid || "test_oid";
+
+	$('.edit-string').each(function() {
+		_setupEditable("string", collection, oid, $(this), {type:"text"});
+	});
+
+	$(".edit-number").each(function() {
+		_setupEditable("number", collection, oid, $(this), {type:"number"});
+	});
+
+}
+
+</script>

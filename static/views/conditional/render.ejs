@@ -1,0 +1,10 @@
+<%
+	for (var i=0; i<conditionals.length; i++) {
+		var cond = conditionals[i];
+%>
+		<b>Name:</b> <a id="<%= id %>.<%= i %>.name" class="edit-string"><%= cond.name %></a>
+		<br>
+		<b>Entity:</b> <a id="<%= id %>.<%= i %>.entity" class="edit-string"><%= cond.entity %></a>
+<%
+	}
+%>

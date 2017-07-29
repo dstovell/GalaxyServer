@@ -127,6 +127,7 @@ exports.init = function (port) {
 
     loadRoutes("admin"); 
     loadRoutes("api");
+    loadRoutes("game");
 
     //var art = require('framework/art');
 
@@ -142,9 +143,10 @@ exports.init = function (port) {
     // will print stacktrace
     if (app.get('env') === 'development') {
         app.use(function (err, req, res, next) {
+            console.log("err=", err);
             res.status(err.status || 500);
             res.render('error', {
-                message: err.message,
+                message: JSON.stringify(err),
                 error: err
             });
         });
@@ -153,6 +155,7 @@ exports.init = function (port) {
     // production error handler
     // no stacktraces leaked to user
     app.use(function (err, req, res, next) {
+        console.log("err=", err);
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,

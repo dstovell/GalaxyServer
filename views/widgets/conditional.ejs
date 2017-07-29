@@ -1,0 +1,39 @@
+<div class="row">
+	<div class="col-md-12">
+
+		<div class="row">
+			<div class="col-md-12">
+				<a id="run-btn" class="btn btn-primary" onclick="addConditional_<%= id %>()">Add Conditional</a>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div id="conditionals-<%= id %>" class="col-md-12">
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+<script>
+	 var conditionals_<%= id %> = [];
+
+	function addConditional_<%= id %>() {
+		conditionals_<%= id %>.push({name:"", entity:""})
+		renderConditionals("<%= id %>", conditionals_<%= id %>);
+	}
+
+
+	if (window.conditionalEJS == null) {
+		window.conditionalEJS = new EJS({url:'/views/conditional/render.ejs'});
+	}
+
+	function renderConditionals(id, conditionalList) {
+		var html = window.conditionalEJS.render({id:id, conditionals:conditionalList});
+		$("#conditionals-"+id).html(html);
+		setupEditables();
+	}
+</script>

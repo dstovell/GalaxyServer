@@ -1,0 +1,21 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= stage.value %>">
+        <%= stage.text %>
+      </a>
+    </h4>
+  </div>
+  <div id="collapse-<%= stage.value %>" class="panel-collapse in">
+    <div class="panel-body">
+
+      <div class="row">
+        <div class="col-md-12">
+          <%- partial('conditional', {id:stage.value}) %>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+</div>
