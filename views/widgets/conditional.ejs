@@ -25,11 +25,12 @@
 
 <script>
 	var conditionals_<%= safeId %> = <%- JSON.stringify(conditionals) %>;
+	var entities_<%= safeId %> = <%- JSON.stringify(entities) %>;
 
 	function addConditional_<%= safeId %>() {
 		conditionals_<%= safeId %>.push({name:"", entity:""})
 		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
-		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
+		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
 	}
 
 
@@ -37,9 +38,9 @@
 		window.conditionalEJS = new EJS({url:'/views/conditional/render.ejs'});
 	}
 
-	function renderConditionals(collection, oid, id, conditionalList) {
+	function renderConditionals(collection, oid, id, conditionalList, entityList) {
 		var safeId = id.replace(/\./g, "_");
-		var html = window.conditionalEJS.render({id:id, conditionals:conditionalList});
+		var html = window.conditionalEJS.render({id:id, conditionals:conditionalList, entities:entityList});
 		$("#conditionals-"+safeId).html(html);
 		setupEditables(collection, oid);
 	}
@@ -52,7 +53,7 @@
 	}
 
 	$(document).ready(function() {
-		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
+		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
 	});
 
 </script>
