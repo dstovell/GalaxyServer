@@ -3,21 +3,26 @@
 %>
 
 <div class="row">
-	<div class="col-md-12">
+	<div id="conditionals-list-<%= safeId %>" class="col-md-12">
 
 		<div class="row">
 			<div class="col-md-12">
-				<a class="btn btn-primary" onclick="addConditional_<%= safeId %>()">Add Conditional</a>
+				<a class="btn btn-primary" onclick="addConditional_<%= safeId %>()"><span class="glyphicon glyphicon-plus"></span> Conditional</a>
 				<br><br>
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-md-12">
-				<div id="conditionals-<%= safeId %>" class="col-md-12">
-				</div>
-			</div>
-		</div>
+		<%
+			for (var i=0; i<conditionals.length; i++) {
+				var cond = conditionals[i];
+				cond.checks = cond.checks || [];
+				cond.actions = cond.actions || [];
+		%>
+
+			<div id="conditionals-<%= safeId %>-<%= i %>"></div>
+		<%
+			}
+		%>
 
 	</div>
 </div>
@@ -28,7 +33,24 @@
 	var entities_<%= safeId %> = <%- JSON.stringify(entities) %>;
 
 	function addConditional_<%= safeId %>() {
-		conditionals_<%= safeId %>.push({name:"", entity:""})
+		var nextIndex = conditionals_<%= safeId %>.length;
+		conditionals_<%= safeId %>.push({name:"", checks:[], actions:[]})
+		var prevHtml = $("#conditionals-list-<%= safeId %>").html();
+		var htmlLine = '<div id="conditionals-<%= safeId %>-' + nextIndex + '"></div>';
+		$("#conditionals-list-<%= safeId %>").html(prevHtml + htmlLine)
+
+		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
+		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
+	}
+
+	function addConditionalItem_<%= safeId %>(type, index) {
+		conditionals_<%= safeId %>[index][type].push({func:""});
+		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
+		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
+	}
+
+	function removeConditionalItem_<%= safeId %>(type, index, itemIndex) {
+		conditionals_<%= safeId %>[index][type].splice(itemIndex, 1);
 		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
 		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
 	}
@@ -40,15 +62,19 @@
 
 	function renderConditionals(collection, oid, id, conditionalList, entityList) {
 		var safeId = id.replace(/\./g, "_");
-		var html = window.conditionalEJS.render({id:id, conditionals:conditionalList, entities:entityList});
-		$("#conditionals-"+safeId).html(html);
+		
+		for (var i=0; i<conditionalList.length; i++) {
+			var cond = conditionalList[i];
+			var html = window.conditionalEJS.render({id:(id+"." + i), index:i, safeId:safeId, cond:cond, entities:entityList});
+			$("#conditionals-"+safeId+"-"+i).html(html);
+		}
+
 		setupEditables(collection, oid);
 	}
 
 	function saveConditionals(collection, oid, id, conditionalList) {
 		var postData = {pk:oid, name:id, value:conditionalList}
 		$.post( "/game/datatable/save/json/"+collection, postData, function( data ) {
-			alert( "/game/datatable/save/json/"+collection );
 		});
 	}
 

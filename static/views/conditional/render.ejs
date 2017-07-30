@@ -1,27 +1,113 @@
-<%
-	for (var i=0; i<conditionals.length; i++) {
-		var cond = conditionals[i];
-%>
+
+<div class="row">
+	<div class="col-md-12 well">
+
 		<div class="row">
 			<div class="col-md-12">
-
-				<div class="panel panel-default">
-		    		<div class="panel-body">
-		    			<div class="row">
-							<div class="col-md-3">
-		    					<b>Name:</b> <a id="<%= id %>.<%= i %>.name" class="edit-string"><%= cond.name %></a>
-		    				</div>
-		    				<div class="col-md-3">
-								<b>Entity:</b> <a id="<%= id %>.<%= i %>.entity" class="edit-select" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"><%= cond.entity %></a>
-							</div>
-						</div>
-		    		</div>
-		  		</div>
-
-		 	</div>
+				<a id="<%= id %>.name" class="edit-string" data-emptytext="Unnamed Conditional"><%= cond.name %></a>
+				<br><br>
+			</div>
 		</div>
 
-		
-<%
-	}
-%>
+		<div class="row">
+			<div class="col-md-7">
+
+				<%
+					var connectors = [{value:"&&", text:"AND"}, {value:"||", text:"OR"}];
+
+					for (var j=0; j<cond.checks.length; j++) {
+						var check = cond.checks[j];
+						var checkString = id + ".checks." + j;
+				%>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+				    		<div class="panel-body">
+				    			<div class="row">
+				    				<div class="col-md-3">
+										<a id="<%= checkString %>.entity" class="edit-select" data-value="<%= check.entity %>" data-emptytext="Entity" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+									</div>
+									<div class="col-md-3">
+										<a id="<%= checkString %>.func" class="edit-select" data-value="<%= check.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+									</div>
+									<div class="col-md-3">
+										<a id="<%= checkString %>.param" class="edit-select" data-value="<%= check.param %>" data-emptytext="Parameter" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+									</div>
+									<div class="col-md-3">
+										<% if (j < (cond.checks.length - 1)) { %>
+											<a id="<%= checkString %>.conn" class="edit-select" data-value="<%= check.conn || '&&' %>" data-source="<%= JSON.stringify(connectors).replace(/\"/g,'&quot;') %>"></a>
+										<% } %>
+										<a class="btn btn-sm btn-danger pull-right" onclick="removeConditionalItem_<%= safeId %>('checks', <%= index %>, <%= j %>)">
+											<span class="glyphicon glyphicon-remove"/>
+										</a>
+									</div>
+								</div>
+				    		</div>
+				  		</div>
+				  	</div>
+				</div>
+
+				<%
+					}
+				%>
+
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn btn-primary" onclick="addConditionalItem_<%= safeId %>('checks', <%= index %>)"><span class="glyphicon glyphicon-plus"></span> Check</a>
+						<br><br>
+					</div>
+				</div>
+
+		  	</div>
+
+			<div class="col-md-5">
+
+				<%
+					for (var j=0; j<cond.actions.length; j++) {
+						var action = cond.actions[j];
+						var actionString = id + ".actions." + j;
+				%>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+				    		<div class="panel-body">
+				    			<div class="row">
+				    				<div class="col-md-2">
+				    					self
+				    				</div>
+									<div class="col-md-4">
+										<a id="<%= actionString %>.func" class="edit-select" data-value="<%= action.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+									</div>
+									<div class="col-md-6">
+										<a id="<%= actionString %>.param" class="edit-select" data-value="<%= action.param %>" data-emptytext="Parameter" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+										<a class="btn btn-sm btn-danger pull-right" onclick="removeConditionalItem_<%= safeId %>('actions', <%= index %>, <%= j %>)">
+											<span class="glyphicon glyphicon-remove"/>
+										</a>
+									</div>
+								</div>
+				    		</div>
+				  		</div>
+				  	</div>
+				</div>
+
+				<%
+					}
+				%>
+
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn btn-primary" onclick="addConditionalItem_<%= safeId %>('actions', <%= index %>)"><span class="glyphicon glyphicon-plus"></span> Action</a>
+						<br><br>
+					</div>
+				</div>
+
+		  	</div>
+
+		</div>
+
+ 	</div>
+</div>
+
+
