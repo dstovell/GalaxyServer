@@ -31,6 +31,11 @@
 <script>
 	var conditionals_<%= safeId %> = <%- JSON.stringify(conditionals) %>;
 	var entities_<%= safeId %> = <%- JSON.stringify(entities) %>;
+	var actions_<%= safeId %> = <%- JSON.stringify(actions) %>;
+
+	function renderConditionals_<%= safeId %>() {
+		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>, actions_<%= safeId %>);
+	}
 
 	function addConditional_<%= safeId %>() {
 		var nextIndex = conditionals_<%= safeId %>.length;
@@ -40,19 +45,19 @@
 		$("#conditionals-list-<%= safeId %>").html(prevHtml + htmlLine)
 
 		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
-		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
+		renderConditionals_<%= safeId %>();
 	}
 
 	function addConditionalItem_<%= safeId %>(type, index) {
 		conditionals_<%= safeId %>[index][type].push({func:""});
 		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
-		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
+		renderConditionals_<%= safeId %>();
 	}
 
 	function removeConditionalItem_<%= safeId %>(type, index, itemIndex) {
 		conditionals_<%= safeId %>[index][type].splice(itemIndex, 1);
 		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
-		renderConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>, entities_<%= safeId %>);
+		renderConditionals_<%= safeId %>();
 	}
 
 
@@ -60,12 +65,12 @@
 		window.conditionalEJS = new EJS({url:'/views/conditional/render.ejs'});
 	}
 
-	function renderConditionals(collection, oid, id, conditionalList, entityList) {
+	function renderConditionals(collection, oid, id, conditionalList, entityList, actions) {
 		var safeId = id.replace(/\./g, "_");
 		
 		for (var i=0; i<conditionalList.length; i++) {
 			var cond = conditionalList[i];
-			var html = window.conditionalEJS.render({id:(id+"." + i), index:i, safeId:safeId, cond:cond, entities:entityList, entityTypeData:entityTypeData});
+			var html = window.conditionalEJS.render({id:(id+"." + i), index:i, safeId:safeId, cond:cond, entities:entityList, entityTypeData:entityTypeData, actions:actions});
 			$("#conditionals-"+safeId+"-"+i).html(html);
 		}
 

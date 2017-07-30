@@ -1,4 +1,8 @@
 
+<%
+if ((stage.actions == null) || (stage.actions.length > 0)) {
+%>
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h4 class="panel-title">
@@ -15,10 +19,14 @@
           <%
             var conditionals = (brain && brain[stateId] && brain[stateId][stage.value]) ? brain[stateId][stage.value] : [];
           %>
-          <%- partial('conditional', {collectionName:collectionName, oid:oid, id:stateId+"."+stage.value, conditionals:conditionals, entities:entities}) %>
+          <%- partial('conditional', {collectionName:collectionName, oid:oid, id:stateId+"."+stage.value, conditionals:conditionals, entities:entities, actions:stage.actions||null}) %>
         </div>
       </div>
      
     </div>
   </div>
 </div>
+
+<%
+}
+%>

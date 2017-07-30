@@ -14,8 +14,9 @@
 
 
       <% 
-        for (var s=0; s<state.stages.length; s++) { 
-        var stage = state.stages[s];
+        for (var k in state.stages) { 
+          var stage = state.stages[k];
+          stage.value = k;
       %>
 
         <div class="row">

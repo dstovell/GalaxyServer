@@ -5,6 +5,10 @@
 	}
 
 	function getEntityActions(type) {
+		if ((actions != null) && (actions.length > 0)) {
+			return actions;
+		}
+
 		return entityTypeData[type]? entityTypeData[type].actions : [];
 	}
 
