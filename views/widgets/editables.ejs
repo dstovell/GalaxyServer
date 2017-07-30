@@ -9,13 +9,19 @@ function _setupEditable(urlType, collection, oid, obj, options) {
 
 	var title = obj.data("title") || "";
 
+	var successCb = obj.data("success");
+
 	var editableData = {
 	    pk:oid,
-	    url:"/game/datatable/save/"+urlType+"/"+collection,
 	    title:title,
-	    success: function(response, newValue) {
-	    	console.log("newValue=" + newValue);
-	    }
+	    url:"/game/datatable/save/"+urlType+"/"+collection,
+	    ajaxOptions: {
+            success: function (data) {
+            	if (window[successCb]) {
+		    		window[successCb](obj, data.result);
+		    	}
+            }
+        },
 	};
 
 	for (var k in options) {
