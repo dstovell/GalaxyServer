@@ -65,7 +65,7 @@
 		
 		for (var i=0; i<conditionalList.length; i++) {
 			var cond = conditionalList[i];
-			var html = window.conditionalEJS.render({id:(id+"." + i), index:i, safeId:safeId, cond:cond, entities:entityList});
+			var html = window.conditionalEJS.render({id:(id+"." + i), index:i, safeId:safeId, cond:cond, entities:entityList, entityTypeData:entityTypeData});
 			$("#conditionals-"+safeId+"-"+i).html(html);
 		}
 

@@ -3,9 +3,26 @@
 
 %>
 
+<style>
+	.modal-wide .modal-dialog {
+		width: 80%;
+	}
+
+	.modal-fullscreen .modal-dialog {
+		width: 90%;
+		height: 90%;
+	}
+</style>
 
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-12">
+		<%- partial('widgets/ai_sim_controls', {}) %>
+		<br>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
 
 		<%
 			for (var s=0; s<states.length; s++) {
@@ -18,23 +35,30 @@
 		%>
 
 	</div>
-	<div class="col-md-4">
+</div>
 
-		<div class="row">
-			<div class="col-md-12">
-				<%- partial('widgets/ai_sim_controls', {}) %>
+<div id="simulation-modal" class="modal fade modal-fullscreen" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Simulation</h4>
 			</div>
-		</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<%- partial('widgets/ai_sim_visualization', {}) %>
+					</div>
 
-		<div class="row">
-			<div class="col-md-12">
-				<%- partial('widgets/ai_sim_visualization', {}) %>
+					<div class="col-md-6">
+						<%- partial('widgets/ai_terminal', {}) %>
+					</div>
+				</div>
 			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<%- partial('widgets/ai_terminal', {}) %>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 
@@ -45,5 +69,15 @@
 	//$(document).ready(function() {
 	//	setupEditables();
 	//});
+
+	var entityTypeData = <%- JSON.stringify(entityTypeData) %>;
+
+	function getEntityChecks(name) {
+		entityTypeData[name]? entityTypeData[name].checks : [];
+	}
+
+	function getEntityActions(name) {
+		entityTypeData[name]? entityTypeData[name].actions : [];
+	}
 
 </script>

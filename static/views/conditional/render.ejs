@@ -1,3 +1,22 @@
+<%
+	function getEntityChecks(name) {
+		var type = getEntityType(name);
+		return entityTypeData[type]? entityTypeData[type].checks : [];
+	}
+
+	function getEntityActions(type) {
+		return entityTypeData[type]? entityTypeData[type].actions : [];
+	}
+
+	function getEntityType(name) {
+		for (var et=0; et<entities.length; et++) {
+			if (entities[et].value == name) {
+				return entities[et].type;
+			}
+		}
+		return "";
+	}
+%>
 
 <div class="row">
 	<div class="col-md-12 well">
@@ -29,10 +48,10 @@
 										<a id="<%= checkString %>.entity" class="edit-select" data-value="<%= check.entity %>" data-emptytext="Entity" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
 									</div>
 									<div class="col-md-3">
-										<a id="<%= checkString %>.func" class="edit-select" data-value="<%= check.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+										<a id="<%= checkString %>.func" class="edit-select" data-value="<%= check.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(getEntityChecks(check.entity)).replace(/\"/g,'&quot;') %>"></a>
 									</div>
 									<div class="col-md-3">
-										<a id="<%= checkString %>.param" class="edit-select" data-value="<%= check.param %>" data-emptytext="Parameter" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+										<a id="<%= checkString %>.param" class="edit-string" data-value="<%= check.param %>" data-emptytext="Parameter"></a>
 									</div>
 									<div class="col-md-3">
 										<% if (j < (cond.checks.length - 1)) { %>
@@ -78,10 +97,10 @@
 				    					self
 				    				</div>
 									<div class="col-md-4">
-										<a id="<%= actionString %>.func" class="edit-select" data-value="<%= action.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+										<a id="<%= actionString %>.func" class="edit-select" data-value="<%= action.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(getEntityActions("brain")).replace(/\"/g,'&quot;') %>"></a>
 									</div>
 									<div class="col-md-6">
-										<a id="<%= actionString %>.param" class="edit-select" data-value="<%= action.param %>" data-emptytext="Parameter" data-source="<%= JSON.stringify(entities).replace(/\"/g,'&quot;') %>"></a>
+										<a id="<%= actionString %>.param" class="edit-string" data-value="<%= action.param %>" data-emptytext="Parameter"></a>
 										<a class="btn btn-sm btn-danger pull-right" onclick="removeConditionalItem_<%= safeId %>('actions', <%= index %>, <%= j %>)">
 											<span class="glyphicon glyphicon-remove"/>
 										</a>

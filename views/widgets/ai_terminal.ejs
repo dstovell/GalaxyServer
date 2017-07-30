@@ -11,7 +11,6 @@
     <div class="panel-body">
       <div class="row">
         <div id="terminal-output" class="col-md-12">
-          None
         </div>
       </div>    
     </div>
@@ -28,6 +27,11 @@ function renderLog() {
   }
 
   $("#terminal-output").html(html);
+};
+
+function clearTerminal() {
+  log = [];
+  renderLog();
 };
 
 function addToTerminal(title, msg) {

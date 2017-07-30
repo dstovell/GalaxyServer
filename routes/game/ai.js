@@ -14,7 +14,7 @@ exports = module.exports = function routeSetup(options) {
     	console.log("states=" + JSON.stringify(states));
     	var id = "dan";
     	ai_controller.getBrain(id, function(err, brain, userBrainsCollectionName) {
-       		return res.render('editor', {layout:'layout_new', states:states, collectionName:userBrainsCollectionName, brain:brain, oid:id});
+       		return res.render('editor', {layout:'layout_new', states:states, collectionName:userBrainsCollectionName, brain:brain, oid:id, entityTypeData:ai_controller.entityTypeData});
        	});
     });
 

@@ -1,18 +1,7 @@
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h4 class="panel-title">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse-controls">
-        Simulation Controls
-      </a>
-    </h4>
-  </div>
-  <div id="collapse-controls" class="panel-collapse in">
-    <div class="panel-body">
-
-      <a id="run-btn" class="btn btn-primary" onclick="runSimulation()">Run Simulation</a>
-
-    </div>
+<div class="row">
+  <div class="col-md-12">
+    <a id="run-btn" class="btn btn-primary" onclick="runSimulation()"><span class="glyphicon glyphicon-play"></span></a>
   </div>
 </div>
 
@@ -20,13 +9,24 @@
   var simuationStarted = false;
 
   function runSimulation() {
-    addToTerminal("Simulation", "Started");
     simuationStarted = true;
     updateControlState();
+
+    if (window["clearTerminal"] != null) {
+      clearTerminal();
+    }
+
+    $("#simulation-modal").modal();
+
+    setTimeout(function() {
+      if (window["addToTerminal"] != null) {
+        addToTerminal("Simulation", "Started");
+      }
+    }, 1000);
   }
 
   function updateControlState() {
-    $("#run-btn").attr('disabled', simuationStarted);
+    //$("#run-btn").attr('disabled', simuationStarted);
   }
 
 </script>
