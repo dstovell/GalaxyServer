@@ -18,6 +18,22 @@ exports = module.exports = function routeSetup(options) {
        	});
     });
 
+    router.post('/runSimulation', function(req, res){
+    	var id = "dan";
+    	ai_controller.getBrain(id, function(err, userBrain) {
+    		delete userBrain._id;
+
+    		var brainConfig = {initState:"idle", userBrain:userBrain};
+
+    		ai_controller.loadBrains([brainConfig]);
+			ai_controller.runSimulation(100, {stepWaitMs:10}, function (err, report) {
+				console.log("error=" + err);
+
+				return res.json({err:err, result:report});
+			});
+    	});
+    });
+
     return router;
 };
 

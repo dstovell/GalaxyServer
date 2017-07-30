@@ -18,11 +18,16 @@
 
     $("#simulation-modal").modal();
 
-    setTimeout(function() {
-      if (window["addToTerminal"] != null) {
-        addToTerminal("Simulation", "Started");
+    addToTerminal("Local", "Started");
+    
+    jQuery.post( "/game/ai/runSimulation", {},
+    function( result ) {
+      var report = result.result;
+      for (var i=0; i<report.log.length; i++) {
+        addToTerminal("Server", report.log[i]);
       }
-    }, 1000);
+      addToTerminal("Local", "Ended - " + report.stepCount + " steps run");
+    });
   }
 
   function updateControlState() {
