@@ -23,7 +23,7 @@ exports = module.exports = function routeSetup(options) {
     	ai_controller.getBrain(id, function(err, userBrain) {
     		delete userBrain._id;
 
-    		var brainConfig = {initState:"idle", userBrain:userBrain};
+    		var brainConfig = {initState:"idle", userBrain:userBrain, owner:id};
 
     		ai_controller.loadBrains([brainConfig]);
 			ai_controller.runSimulation(100, {stepWaitMs:10}, function (err, report) {
