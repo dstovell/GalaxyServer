@@ -22,8 +22,8 @@
 	}
 %>
 
-<div class="row">
-	<div class="col-md-12 well">
+ <div class="panel panel-info">
+      <div class="panel-body">
 
 		<div class="row">
 			<div class="col-md-12">
@@ -55,7 +55,7 @@
 										<a id="<%= checkString %>.func" class="edit-select" data-value="<%= check.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(getEntityChecks(check.entity)).replace(/\"/g,'&quot;') %>" data-success="onSuccess_<%= safeId %>"></a>
 									</div>
 									<div class="col-md-3">
-										<a id="<%= checkString %>.param" class="edit-string" data-value="<%= check.param %>" data-emptytext="Parameter"></a>
+										<a id="<%= checkString %>.param" class="edit-number" data-min="0" data-max="100000" data-value="<%= check.param %>" data-emptytext="Parameter"></a>
 									</div>
 									<div class="col-md-3">
 										<% if (j < (cond.checks.length - 1)) { %>
@@ -104,7 +104,7 @@
 										<a id="<%= actionString %>.func" class="edit-select" data-value="<%= action.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(getEntityActions("brain")).replace(/\"/g,'&quot;') %>" data-success="onSuccess_<%= safeId %>"></a>
 									</div>
 									<div class="col-md-6">
-										<a id="<%= actionString %>.param" class="edit-string" data-value="<%= action.param %>" data-emptytext="Parameter"></a>
+										<a id="<%= actionString %>.param" class="edit-number" data-min="0" data-max="100000" data-value="<%= action.param %>" data-emptytext="Parameter"></a>
 										<a class="btn btn-sm btn-danger pull-right" onclick="removeConditionalItem_<%= safeId %>('actions', <%= index %>, <%= j %>)">
 											<span class="glyphicon glyphicon-remove"/>
 										</a>

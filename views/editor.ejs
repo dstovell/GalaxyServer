@@ -24,15 +24,17 @@
 <div class="row">
 	<div class="col-md-12">
 
-		<%
-			for (var s=0; s<states.length; s++) {
-		%>
-
-			<%- partial('widgets/ai_state', {brain:brain, collectionName:collectionName, oid:oid, state:states[s]}) %>
-
-		<%
-			}
-		%>
+		<div class="row">
+			<%
+				for (var s=0; s<states.length; s++) {
+			%>
+					<div class="col-md-2">
+						<%- partial('widgets/ai_state', {brain:brain, collectionName:collectionName, oid:oid, state:states[s]}) %>
+					</div>
+			<%
+				}
+			%>
+		</div>
 
 	</div>
 </div>
@@ -79,5 +81,4 @@
 	function getEntityActions(name) {
 		entityTypeData[name]? entityTypeData[name].actions : [];
 	}
-
 </script>
