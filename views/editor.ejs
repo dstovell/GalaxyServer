@@ -15,21 +15,32 @@
 </style>
 
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-5"></div>
+	<div class="col-md-2">
 		<%- partial('widgets/ai_sim_controls', {}) %>
 		<br>
 	</div>
+	<div class="col-md-5"></div>
+</div>
+
+<div class="row">
+	<div class="col-md-5"></div>
+	<div class="col-md-2">
+		<%- partial('widgets/ai_state', {brain:brain, collectionName:collectionName, oid:oid, state:states[0], detailed:false}) %>
+	</div>
+	<div class="col-md-5"></div>
 </div>
 
 <div class="row">
 	<div class="col-md-12">
 
 		<div class="row">
+			<div class="col-md-1"></div>
 			<%
-				for (var s=0; s<states.length; s++) {
+				for (var s=1; s<states.length; s++) {
 			%>
 					<div class="col-md-2">
-						<%- partial('widgets/ai_state', {brain:brain, collectionName:collectionName, oid:oid, state:states[s]}) %>
+						<%- partial('widgets/ai_state', {brain:brain, collectionName:collectionName, oid:oid, state:states[s], detailed:true}) %>
 					</div>
 			<%
 				}

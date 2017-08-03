@@ -22,13 +22,18 @@
 	}
 %>
 
- <div class="panel panel-info">
+ <div class="panel panel-primary">
       <div class="panel-body">
 
 		<div class="row">
-			<div class="col-md-12">
-				<a id="<%= id %>.name" class="edit-string" data-emptytext="Unnamed Conditional"><%= cond.name %></a>
+			<div class="col-md-10">
+				<a id="<%= id %>.name" class="edit-string" data-emptytext="Unnamed Conditional" data-success="onNameUpdate_<%= safeId %>"><%= cond.name %></a>
 				<br><br>
+			</div>
+			<div class="col-md-2 pull-right">
+				<a class="btn btn-sm btn-danger pull-right" onclick="removeConditional_<%= safeId %>(<%= index %>)">
+					<span class="glyphicon glyphicon-remove"/>
+				</a>
 			</div>
 		</div>
 
@@ -45,7 +50,7 @@
 
 				<div class="row">
 					<div class="col-md-12">
-						<div class="panel panel-default">
+						<div class="panel panel-info">
 				    		<div class="panel-body">
 				    			<div class="row">
 				    				<div class="col-md-3">
@@ -94,7 +99,7 @@
 
 				<div class="row">
 					<div class="col-md-12">
-						<div class="panel panel-default">
+						<div class="panel panel-info">
 				    		<div class="panel-body">
 				    			<div class="row">
 				    				<div class="col-md-2">
@@ -137,6 +142,9 @@
 	function onSuccess_<%= safeId %>(obj, result) {
 		//console.log("onSuccess result=" + result);
 		//renderConditionals_<%= safeId %>();
+	}
+
+	function onNameUpdate_<%= safeId %>(obj, result) {
 	}
 </script>
 

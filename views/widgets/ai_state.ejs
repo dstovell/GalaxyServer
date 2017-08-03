@@ -1,3 +1,17 @@
+<% 
+  function isStageEnabled(stageName) {
+    if (state.stages[stageName] == null) {
+      return true;
+    }
+
+    if (state.stages[stageName].actions == null) {
+      return true;
+    }
+
+    return (state.stages[stageName].actions.length > 0);
+  }
+%>
+
 <div class="panel panel-primary" draggable="true">
   <div class="panel-body">
     <div class="panel panel-info">
@@ -15,26 +29,28 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-4">
-            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ai-state-modal-<%= state.id %>-setGoalValues">
+            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="<%= isStageEnabled('setGoalValues') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-setGoalValues" <%= isStageEnabled('setGoalValues') ? '' : 'disabled' %> >
               <span class="glyphicon glyphicon-usd"/>
             </a>
           </div>
           <div class="col-md-4">
-            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ai-state-modal-<%= state.id %>-act">
+            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="<%= isStageEnabled('actions') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-act" <%= isStageEnabled("actions") ? "" : "disabled" %> >
               <span class="glyphicon glyphicon-move"/>
             </a>
           </div>
           <div class="col-md-4">
-            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ai-state-modal-<%= state.id %>-stateChange">
+            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="<%= isStageEnabled('stateChange') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-stateChange" <%= isStageEnabled("stateChange") ? "" : "disabled" %> >
               <span class="glyphicon glyphicon-retweet"/>
             </a>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12" style="text-align:center">
-            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/641778-200.png" height="100" width="100" />
+        <% if (detailed) { %>
+          <div class="row">
+            <div class="col-md-12" style="text-align:center">
+              <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/641778-200.png" height="100" width="100" />
+            </div>
           </div>
-        </div>
+        <% } %>
        </div>
     </div>
    </div>
@@ -50,7 +66,7 @@
 
 
     <div id="ai-state-modal-<%= state.id %>-<%- k %>" class="modal fade modal-fullscreen" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-primary">
 
         <!-- Modal content-->
         <div class="modal-content">
@@ -59,6 +75,8 @@
             <h4 class="modal-title">
               <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/641778-200.png" height="40" width="40" />
               <%= state.name %>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <%= stage.text %>
             </h4>
           </div>
           <div class="modal-body" style="overflow-y: scroll; max-height:600px;">

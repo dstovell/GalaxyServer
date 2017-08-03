@@ -48,6 +48,15 @@
 		renderConditionals_<%= safeId %>();
 	}
 
+	function removeConditional_<%= safeId %>(index) {
+		var nextIndex = conditionals_<%= safeId %>.length;
+
+		conditionals_<%= safeId %>.splice(index, 1);
+
+		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
+		renderConditionals_<%= safeId %>();
+	}
+
 	function addConditionalItem_<%= safeId %>(type, index) {
 		conditionals_<%= safeId %>[index][type].push({func:""});
 		saveConditionals("<%= collectionName %>", "<%= oid %>", "<%= id %>", conditionals_<%= safeId %>);
@@ -72,6 +81,11 @@
 			var cond = conditionalList[i];
 			var html = window.conditionalEJS.render({id:(id+"." + i), index:i, safeId:safeId, cond:cond, entities:entityList, entityTypeData:entityTypeData, actions:actions});
 			$("#conditionals-"+safeId+"-"+i).html(html);
+		}
+
+		var removedItem = $("#conditionals-"+safeId+"-"+conditionalList.length);
+		if (removedItem) {
+			removedItem.remove();
 		}
 
 		setupEditables(collection, oid);
