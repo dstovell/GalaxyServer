@@ -2,60 +2,78 @@
   <div class="panel-body">
     <div class="panel panel-info">
       <div class="panel-body">
-        <b><%= state.name %></b>
-         <a id="state-btn-<%= state.id %>" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#ai-state-modal-<%= state.id %>">
-          <span class="glyphicon glyphicon-pencil"></span>
-        </a>
+
+        <div class="row">
+          <div class="col-md-12" style="text-align:center">
+            <b><%= state.name %></b>
+          </div>
+        </div>
+        
       </div>
     </div>
     <div class="panel panel-info">
       <div class="panel-body">
-        <span style="text-align:center">
-          <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/641778-200.png" height="100" width="100" />
-        </span>
+        <div class="row">
+          <div class="col-md-4">
+            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ai-state-modal-<%= state.id %>-setGoalValues">
+              <span class="glyphicon glyphicon-usd"/>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ai-state-modal-<%= state.id %>-act">
+              <span class="glyphicon glyphicon-move"/>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ai-state-modal-<%= state.id %>-stateChange">
+              <span class="glyphicon glyphicon-retweet"/>
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="text-align:center">
+            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/641778-200.png" height="100" width="100" />
+          </div>
+        </div>
        </div>
     </div>
    </div>
 </div>
 
-<div id="ai-state-modal-<%= state.id %>" class="modal fade modal-fullscreen" role="dialog">
-  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">
-          <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/641778-200.png" height="40" width="40" />
-          <%= state.name %>
-        </h4>
-      </div>
-      <div class="modal-body" style="overflow-y: scroll; max-height:600px;">
-        
-        <% 
-          for (var k in state.stages) { 
-            var stage = state.stages[k];
-            stage.value = k;
-        %>
+<% 
+  for (var k in state.stages) { 
+    var stage = state.stages[k];
+    stage.value = k;
+%>
 
-          <div class="row">
-            <div class="col-md-12">
 
-              <%- partial('ai_state_stage', {brain:brain, stateId:state.id, stage:stage, collectionName:collectionName, entities:state.entities}) %>
-              
-            </div>
+
+    <div id="ai-state-modal-<%= state.id %>-<%- k %>" class="modal fade modal-fullscreen" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">
+              <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/641778-200.png" height="40" width="40" />
+              <%= state.name %>
+            </h4>
           </div>
+          <div class="modal-body" style="overflow-y: scroll; max-height:600px;">
 
-        <% } %>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%- partial('ai_state_stage', {brain:brain, stateId:state.id, stage:stage, collectionName:collectionName, entities:state.entities}) %>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div>
-</div>
+<% } %>
 
 <script>
   var entities_<%= state.id %> = <%- JSON.stringify(state.entities) %>;
