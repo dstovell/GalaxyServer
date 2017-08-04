@@ -1,4 +1,9 @@
 <% 
+
+  function getConditionals(stateId, stageId) {
+    return (brain && brain[stateId] && brain[stateId][stageId]) ? brain[stateId][stageId] : [];
+  }
+
   function isStageEnabled(stageName) {
     if (state.stages[stageName] == null) {
       return true;
@@ -9,6 +14,14 @@
     }
 
     return (state.stages[stageName].actions.length > 0);
+  }
+
+  function getStageButtonClass(stageName) {
+    if (!isStageEnabled(stageName)) {
+      return "btn-default";
+    }
+
+    return (getConditionals(state.id, stageName).length > 0) ? "btn-primary" : "btn-default";
   }
 %>
 
@@ -29,17 +42,17 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-4">
-            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="<%= isStageEnabled('setGoalValues') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-setGoalValues" <%= isStageEnabled('setGoalValues') ? '' : 'disabled' %> >
+            <a id="state1-btn-<%= state.id %>" class="btn <%= getStageButtonClass('setGoalValues') %> btn-sm" data-toggle="<%= isStageEnabled('setGoalValues') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-setGoalValues" <%= isStageEnabled('setGoalValues') ? '' : 'disabled' %> >
               <span class="glyphicon glyphicon-usd"/>
             </a>
           </div>
           <div class="col-md-4">
-            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="<%= isStageEnabled('actions') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-act" <%= isStageEnabled("actions") ? "" : "disabled" %> >
+            <a id="state1-btn-<%= state.id %>" class="btn <%= getStageButtonClass('act') %> btn-sm" data-toggle="<%= isStageEnabled('act') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-act" <%= isStageEnabled("act") ? "" : "disabled" %> >
               <span class="glyphicon glyphicon-move"/>
             </a>
           </div>
           <div class="col-md-4">
-            <a id="state1-btn-<%= state.id %>" class="btn btn-primary btn-sm" data-toggle="<%= isStageEnabled('stateChange') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-stateChange" <%= isStageEnabled("stateChange") ? "" : "disabled" %> >
+            <a id="state1-btn-<%= state.id %>" class="btn <%= getStageButtonClass('stateChange') %> btn-sm" data-toggle="<%= isStageEnabled('stateChange') ? 'modal' : '' %>" data-target="#ai-state-modal-<%= state.id %>-stateChange" <%= isStageEnabled("stateChange") ? "" : "disabled" %> >
               <span class="glyphicon glyphicon-retweet"/>
             </a>
           </div>
@@ -90,6 +103,12 @@
         </div>
       </div>
     </div>
+
+    <script>
+      $("#ai-state-modal-<%= state.id %>-<%- k %>").on("hidden.bs.modal", function () {
+        window.location.reload();
+      });
+    </script>
 
 <% } %>
 

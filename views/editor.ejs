@@ -1,6 +1,29 @@
 <%
 	if (typeof states == 'undefined') { states=[{id:"base", name:"Base"}, {id:"idle", name:"Idle"}]; }
 
+	var stateReferences = {};
+	for (var s in brain) {
+		var stateChangeConditionals = brain[s].stateChange || [];
+		console.log(s + "s " + JSON.stringify(stateChangeConditionals));
+		for (var c=0; c<stateChangeConditionals.length; c++) {
+			console.log(c + "c " + JSON.stringify(stateChangeConditionals[c]));
+			var actions = stateChangeConditionals[c].actions || [];
+			for (var a=0; a<actions.length; a++) {
+				console.log(a + "a " + JSON.stringify(actions[a]));
+				if (actions[a].func) {
+					stateReferences[actions[a].func] = true;
+				}
+			}
+		}
+	}
+
+	function isStateReferenced(stateId) {
+		if (stateId === "idle") {
+			return true;
+		}
+
+		return stateReferences[stateId];
+	}
 %>
 
 <style>
@@ -37,7 +60,22 @@
 		<div class="row">
 			<div class="col-md-1"></div>
 			<%
+				var statesShow = Object.keys(stateReferences).length;
+				var spacers = (statesShow > 0) ? 4 - statesShow : 3;
+				for (var sp=1; sp<spacers; sp++) {
+			%>
+					<div class="col-md-2">
+						&nbsp;
+					</div>
+			<%
+				}
+			%>
+
+			<%
 				for (var s=1; s<states.length; s++) {
+					if (!isStateReferenced(states[s].id)) {
+						continue;
+					}
 			%>
 					<div class="col-md-2">
 						<%- partial('widgets/ai_state', {brain:brain, collectionName:collectionName, oid:oid, state:states[s], detailed:true}) %>
