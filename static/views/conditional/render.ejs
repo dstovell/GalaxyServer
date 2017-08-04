@@ -4,8 +4,10 @@
 		return entityTypeData[type]? entityTypeData[type].checks : [];
 	}
 
+	var isActionsOverridden = ((actions != null) && (actions.length > 0));
+
 	function getEntityActions(type) {
-		if ((actions != null) && (actions.length > 0)) {
+		if (isActionsOverridden) {
 			return actions;
 		}
 
@@ -92,6 +94,8 @@
 			<div class="col-md-5">
 
 				<%
+					var isAddDisabled = (isActionsOverridden && (cond.actions.length >= 1))
+
 					for (var j=0; j<cond.actions.length; j++) {
 						var action = cond.actions[j];
 						var actionString = id + ".actions." + j;
@@ -110,7 +114,7 @@
 									</div>
 									<div class="col-md-6">
 										<a id="<%= actionString %>.param" class="edit-number" data-min="0" data-max="100000" data-value="<%= action.param %>" data-emptytext="Parameter"></a>
-										<a class="btn btn-sm btn-danger pull-right" onclick="removeConditionalItem_<%= safeId %>('actions', <%= index %>, <%= j %>)">
+										<a class="btn btn-sm btn-danger pull-right" onclick="removeConditionalItem_<%= safeId %>('actions', <%= index %>, <%= j %>)" >
 											<span class="glyphicon glyphicon-remove"/>
 										</a>
 									</div>
@@ -126,7 +130,9 @@
 
 				<div class="row">
 					<div class="col-md-12">
-						<a class="btn btn-primary" onclick="addConditionalItem_<%= safeId %>('actions', <%= index %>)"><span class="glyphicon glyphicon-plus"></span> Action</a>
+						<a class="btn btn-primary" <% if (!isAddDisabled) { %> onclick="addConditionalItem_<%= safeId %>('actions', <%= index %>)" <% } else { %> disabled <% } %> >
+							<span class="glyphicon glyphicon-plus"></span> Action
+						</a>
 						<br><br>
 					</div>
 				</div>
