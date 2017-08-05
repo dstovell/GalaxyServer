@@ -1,7 +1,42 @@
 <%
+
+	var checkParamMap = {};
+	var actionParamMap = {};
+
+	for (var et in entityTypeData) {
+		var checks = entityTypeData[et].checks || [];
+		for (var c=0; c<checks.length; c++) {
+			var check = checks[c];
+			checkParamMap[check.value] = check.params;
+		}
+		var actions = entityTypeData[et].actions || [];
+		for (var a=0; a<actions.length; a++) {
+			var action = actions[a];
+			actionParamMap[check.value] = action.params;
+		}
+	}
+
 	function getEntityChecks(name) {
 		var type = getEntityType(name);
 		return entityTypeData[type]? entityTypeData[type].checks : [];
+	}
+
+	function getCheckParamName(name) {
+		var params = checkParamMap[name] || {};
+		var keys = Object.keys(params);
+		if (keys.length > 0) {
+			return keys[0];
+		}
+		return "";
+	}
+
+	function getActionParamName(name) {
+		var params = actionParamMap[name] || {};
+		var keys = Object.keys(params);
+		if (keys.length > 0) {
+			return keys[0];
+		}
+		return "";
 	}
 
 	var isActionsOverridden = ((actions != null) && (actions.length > 0));
@@ -62,7 +97,14 @@
 										<a id="<%= checkString %>.func" class="edit-select" data-value="<%= check.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(getEntityChecks(check.entity)).replace(/\"/g,'&quot;') %>" data-success="onSuccess_<%= safeId %>"></a>
 									</div>
 									<div class="col-md-3">
-										<a id="<%= checkString %>.param" class="edit-number" data-min="0" data-max="100000" data-value="<%= check.param %>" data-emptytext="Parameter"></a>
+										<%
+											var paramName = getCheckParamName(check.func);
+											if (paramName) {
+										%>
+											<a id="<%= checkString %>.param" class="edit-number" data-min="0" data-max="100000" data-value="<%= check.param %>" data-emptytext="<%= paramName %>"></a>
+										<%
+											}
+										%>
 									</div>
 									<div class="col-md-3">
 										<% if (j < (cond.checks.length - 1)) { %>
@@ -113,7 +155,15 @@
 										<a id="<%= actionString %>.func" class="edit-select" data-value="<%= action.func %>" data-emptytext="Function" data-source="<%= JSON.stringify(getEntityActions("brain")).replace(/\"/g,'&quot;') %>" data-success="onSuccess_<%= safeId %>"></a>
 									</div>
 									<div class="col-md-6">
-										<a id="<%= actionString %>.param" class="edit-number" data-min="0" data-max="100000" data-value="<%= action.param %>" data-emptytext="Parameter"></a>
+									
+										<%
+											var paramName = getActionParamName(action.func);
+											if (paramName) {
+										%>
+											<a id="<%= actionString %>.param" class="edit-number" data-min="0" data-max="100000" data-value="<%= action.param %>" data-emptytext="<%= paramName %>"></a>
+										<%
+											}
+										%>
 										<a class="btn btn-sm btn-danger pull-right" onclick="removeConditionalItem_<%= safeId %>('actions', <%= index %>, <%= j %>)" >
 											<span class="glyphicon glyphicon-remove"/>
 										</a>
