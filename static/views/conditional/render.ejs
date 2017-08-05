@@ -30,11 +30,29 @@
 		return "";
 	}
 
+	function getCheckParamType(name) {
+		var params = checkParamMap[name] || {};
+		var keys = Object.keys(params);
+		if (keys.length > 0) {
+			return params[keys[0]];
+		}
+		return "";
+	}
+
 	function getActionParamName(name) {
 		var params = actionParamMap[name] || {};
 		var keys = Object.keys(params);
 		if (keys.length > 0) {
 			return keys[0];
+		}
+		return "";
+	}
+
+	function getActionParamType(name) {
+		var params = actionParamMap[name] || {};
+		var keys = Object.keys(params);
+		if (keys.length > 0) {
+			return params[keys[0]];
 		}
 		return "";
 	}
@@ -102,7 +120,7 @@
 											var paramName = getCheckParamName(check.func);
 											if (paramName) {
 										%>
-											<a id="<%= checkString %>.params.<%= paramName %>" class="edit-number" data-min="0" data-max="100000" data-value="<%= check.params[paramName] %>" data-emptytext="<%= paramName %>"></a>
+											<a id="<%= checkString %>.params.<%= paramName %>" class="edit-<%= getCheckParamType(check.func) %>" data-min="0" data-max="100000" data-value="<%= check.params[paramName] %>" data-emptytext="<%= paramName %>"></a>
 										<%
 											}
 										%>
@@ -162,7 +180,7 @@
 											var paramName = getActionParamName(action.func);
 											if (paramName) {
 										%>
-											<a id="<%= actionString %>.params.<%= paramName %>" class="edit-number" data-min="0" data-max="100000" data-value="<%= action.params[paramName] %>" data-emptytext="<%= paramName %>"></a>
+											<a id="<%= actionString %>.params.<%= paramName %>" class="edit-<%= getActionParamType(action.func) %>" data-min="0" data-max="100000" data-value="<%= action.params[paramName] %>" data-emptytext="<%= paramName %>"></a>
 										<%
 											}
 										%>
