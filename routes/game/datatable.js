@@ -34,7 +34,7 @@ exports = module.exports = function routeSetup(options) {
     });
 
     router.post('/save/number/:collection', function(req, res){
-    	var value = req.number("value");
+    	var value = parseFloat(req.param("value") || 0);
     	return handleSave(req, res, value);
     });
 
