@@ -9,10 +9,10 @@
 			var check = checks[c];
 			checkParamMap[check.value] = check.params;
 		}
-		var actions = entityTypeData[et].actions || [];
-		for (var a=0; a<actions.length; a++) {
-			var action = actions[a];
-			actionParamMap[check.value] = action.params;
+		var entActions = entityTypeData[et].actions || [];
+		for (var a=0; a<entActions.length; a++) {
+			var entAction = entActions[a];
+			actionParamMap[check.value] = entAction.params;
 		}
 	}
 
